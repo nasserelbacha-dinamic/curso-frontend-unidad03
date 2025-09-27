@@ -1,157 +1,273 @@
-// App principal - Demostrando todos los conceptos de la Clase 2
-import Titulo from './components/Titulo';
-import TarjetaUsuario from './components/TarjetaUsuario';
-import MensajeCondicional from './components/MensajeCondicional';
-import Avatar from './components/Avatar';
-import CardProducto from './components/CardProducto';
-import ListaLibros from './components/ListaLibros';
-import MensajeAdmin from './components/MensajeAdmin';
-import Perfil from './components/Perfil';
-import type { Libro, Usuario, Producto } from './types';
+// App principal - Clase 3: Props y Estado Tipado en React
+import { useState } from 'react';
+
+// Componentes básicos de ejemplo
+import Saludo from './components/Saludo';
+import Usuario from './components/Usuario';
+import Contador from './components/Contador';
+import FormularioUsuario from './components/FormularioUsuario';
+import InputTexto from './components/InputTexto';
+import DetectorTeclas from './components/DetectorTeclas';
+
+// Ejemplos de ciclo de vida
+import Bienvenida from './components/Bienvenida';
+import Reloj from './components/Reloj';
+import Temporizador from './components/Temporizador';
+
+// Ejemplos de Lifting State Up
+import EjemploLiftingState from './components/EjemploLiftingState';
+
+// Ejercicios prácticos
+import UsuarioCard from './components/ejercicios/UsuarioCard';
+import ContadorEjercicio from './components/ejercicios/ContadorEjercicio';
+import FormularioContacto from './components/ejercicios/FormularioContacto';
+import InputTipado from './components/ejercicios/InputTipado';
+import DetectorTeclasEjercicio from './components/ejercicios/DetectorTeclasEjercicio';
+import BienvenidaEjercicio from './components/ejercicios/BienvenidaEjercicio';
+import NombreConEfecto from './components/ejercicios/NombreConEfecto';
+import TemporizadorEjercicio from './components/ejercicios/TemporizadorEjercicio';
+import LiftingStateEjercicio from './components/ejercicios/LiftingStateEjercicio';
+import FormularioLogin from './components/ejercicios/FormularioLogin';
 
 function App() {
-  // Datos de ejemplo para demostrar los componentes
-  const usuario: Usuario = {
-    id: 1,
-    nombre: "María García",
-    email: "maria@email.com",
-    esAdmin: true,
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
-  };
-
-  const libros: Libro[] = [
-    {
-      id: 1,
-      titulo: "El Quijote",
-      autor: "Miguel de Cervantes",
-      genero: "Novela",
-      paginas: 863,
-      leido: true,
-      calificacion: 5,
-      portada: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200&h=300&fit=crop"
-    },
-    {
-      id: 2,
-      titulo: "Cien años de soledad",
-      autor: "Gabriel García Márquez",
-      genero: "Realismo mágico",
-      paginas: 471,
-      leido: false,
-      portada: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=300&fit=crop"
-    },
-    {
-      id: 3,
-      titulo: "1984",
-      autor: "George Orwell",
-      genero: "Ciencia ficción",
-      paginas: 326,
-      leido: true,
-      calificacion: 4,
-      portada: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200&h=300&fit=crop"
-    }
-  ];
-
-  const productos: Producto[] = [
-    {
-      nombre: "Marcador de libros",
-      precio: 5.99,
-      stock: 15
-    },
-    {
-      nombre: "Lámpara de lectura",
-      precio: 29.99,
-      stock: 0
-    }
-  ];
+  const [mostrarReloj, setMostrarReloj] = useState<boolean>(true);
+  const [mostrarTemporizador, setMostrarTemporizador] = useState<boolean>(true);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Componente Titulo con props tipadas */}
-        <Titulo texto="📚 Mi Biblioteca Personal" />
         
-        {/* Componente Perfil - Composición de múltiples componentes */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">👤 Mi Perfil</h2>
-            <p className="text-gray-600">Información personal y configuración</p>
-          </div>
-          <Perfil usuario={usuario} />
-        </section>
+        {/* Header */}
+        <header className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            📚 Clase 3: Props y Estado Tipado en React
+          </h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Manejo de Eventos y Ciclo de Vida con TypeScript. 
+            Esta clase cubre props tipadas, useState, eventos, useEffect y lifting state up.
+          </p>
+        </header>
 
-        {/* Componente MensajeCondicional */}
-        <section className="mb-12">
+        {/* Sección 1: Props en React con TypeScript */}
+        <section className="mb-16">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">💬 Mensajes</h2>
-            <p className="text-gray-600">Demostración de renderizado condicional</p>
-          </div>
-          <div className="max-w-2xl mx-auto space-y-4">
-            <MensajeCondicional 
-              mostrar={true} 
-              mensaje="¡Bienvenido a tu biblioteca personal!" 
-            />
-            <MensajeCondicional 
-              mostrar={false} 
-              mensaje="Este mensaje no se mostrará" 
-            />
-          </div>
-        </section>
-
-        {/* Componente ListaLibros con .map() */}
-        <section className="mb-12">
-          <div className="card p-8">
-            <ListaLibros libros={libros} />
-          </div>
-        </section>
-
-        {/* Componente CardProducto con interface Producto */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">🛍️ Productos Relacionados</h2>
-            <p className="text-gray-600">Accesorios para tu biblioteca</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {productos.map((producto, index) => (
-              <CardProducto key={index} producto={producto} />
-            ))}
-          </div>
-        </section>
-
-        {/* Demostración de componentes individuales */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">🧩 Demostración de Componentes</h2>
-            <p className="text-gray-600">Ejemplos de uso individual de cada componente</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              🎯 1. Props en React con TypeScript
+            </h2>
+            <p className="text-gray-600">
+              Ejemplos de props tipadas y props opcionales
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="card p-6">
-              <h3 className="text-lg font-semibold mb-4 text-center">Tarjeta de Usuario</h3>
-              <TarjetaUsuario 
-                nombre="Ana López" 
-                edad={28} 
-                email="ana@email.com" 
-              />
+            <div className="bg-white p-6 rounded-lg shadow-md border">
+              <h3 className="text-lg font-semibold mb-4">Saludo Simple</h3>
+              <Saludo nombre="Camila" />
             </div>
             
-            <div className="card p-6 text-center">
-              <h3 className="text-lg font-semibold mb-4">Avatar</h3>
-              <Avatar 
-                urlImagen="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-                nombre="Ana López"
-                tamaño="pequeño"
-              />
+            <Usuario nombre="Lucas" edad={25} ciudad="Mendoza" />
+            <Usuario nombre="Sofía" edad={30} />
+          </div>
+        </section>
+
+        {/* Sección 2: Estado con useState */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              📊 2. Estado en Componentes - useState
+            </h2>
+            <p className="text-gray-600">
+              Ejemplos de useState con diferentes tipos de datos
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Contador />
+            <FormularioUsuario />
+          </div>
+        </section>
+
+        {/* Sección 3: Manejo de Eventos */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              ⌨️ 3. Manejo de Eventos con TypeScript
+            </h2>
+            <p className="text-gray-600">
+              Eventos de clic, input y teclado correctamente tipados
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <InputTexto />
+            <DetectorTeclas />
+          </div>
+        </section>
+
+        {/* Sección 4: Ciclo de Vida con useEffect */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              🔄 4. Ciclo de Vida con useEffect
+            </h2>
+            <p className="text-gray-600">
+              Montaje, actualización y desmontaje de componentes
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Bienvenida />
+            
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-lg shadow-md border text-center">
+                <h3 className="text-lg font-semibold mb-4">Control de Reloj</h3>
+                <button
+                  onClick={() => setMostrarReloj(!mostrarReloj)}
+                  className={`px-4 py-2 rounded font-medium transition-colors ${
+                    mostrarReloj 
+                      ? 'bg-red-500 hover:bg-red-600 text-white' 
+                      : 'bg-green-500 hover:bg-green-600 text-white'
+                  }`}
+                >
+                  {mostrarReloj ? 'Ocultar Reloj' : 'Mostrar Reloj'}
+                </button>
+              </div>
+              {mostrarReloj && <Reloj />}
             </div>
             
-            <div className="card p-6">
-              <h3 className="text-lg font-semibold mb-4 text-center">Mensaje de Usuario</h3>
-              <MensajeAdmin 
-                esAdmin={false}
-                nombre="Ana López"
-              />
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-lg shadow-md border text-center">
+                <h3 className="text-lg font-semibold mb-4">Control de Temporizador</h3>
+                <button
+                  onClick={() => setMostrarTemporizador(!mostrarTemporizador)}
+                  className={`px-4 py-2 rounded font-medium transition-colors ${
+                    mostrarTemporizador 
+                      ? 'bg-red-500 hover:bg-red-600 text-white' 
+                      : 'bg-green-500 hover:bg-green-600 text-white'
+                  }`}
+                >
+                  {mostrarTemporizador ? 'Desmontar' : 'Montar'}
+                </button>
+              </div>
+              {mostrarTemporizador && <Temporizador />}
             </div>
           </div>
         </section>
+
+        {/* Sección 5: Lifting State Up */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              ⬆️ 5. Lifting State Up
+            </h2>
+            <p className="text-gray-600">
+              Elevación de estado para compartir datos entre componentes
+            </p>
+          </div>
+          
+          <div className="bg-white p-8 rounded-lg shadow-md border">
+            <EjemploLiftingState />
+          </div>
+        </section>
+
+        {/* Sección 6: Ejercicios Prácticos */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              💪 6. Ejercicios Prácticos
+            </h2>
+            <p className="text-gray-600">
+              Implementación de los 10 ejercicios de la clase
+            </p>
+          </div>
+          
+          {/* Ejercicios 1-5: Props, Estado y Eventos */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-center">
+              Props, Estado y Eventos
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <UsuarioCard 
+                nombre="Ana López" 
+                edad={28} 
+                profesion="Desarrolladora"
+              />
+              <ContadorEjercicio />
+              <FormularioContacto />
+              <InputTipado />
+              <DetectorTeclasEjercicio />
+            </div>
+          </div>
+
+          {/* Ejercicios 6-8: Ciclo de Vida */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-center">
+              Ciclo de Vida
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <BienvenidaEjercicio />
+              <NombreConEfecto />
+              <TemporizadorEjercicio />
+            </div>
+          </div>
+
+          {/* Ejercicios 9-10: Lifting State y Formularios */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-center">
+              Lifting State y Formularios Avanzados
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <LiftingStateEjercicio />
+              <FormularioLogin />
+            </div>
+          </div>
+        </section>
+
+        {/* Footer con información adicional */}
+        <footer className="bg-white rounded-lg shadow-md border p-8 text-center">
+          <h3 className="text-xl font-semibold mb-4">🎓 Conceptos Aprendidos</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Props Tipadas</h4>
+              <ul className="space-y-1">
+                <li>• Interfaces para props</li>
+                <li>• Props opcionales</li>
+                <li>• Validación con TypeScript</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Estado</h4>
+              <ul className="space-y-1">
+                <li>• useState con tipos</li>
+                <li>• Estado de objetos</li>
+                <li>• Actualización inmutable</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Eventos</h4>
+              <ul className="space-y-1">
+                <li>• Eventos tipados</li>
+                <li>• onChange, onClick, onKeyDown</li>
+                <li>• Prevención de defaults</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Ciclo de Vida</h4>
+              <ul className="space-y-1">
+                <li>• useEffect montaje/desmontaje</li>
+                <li>• Dependencias</li>
+                <li>• Limpieza de efectos</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+            <p className="text-blue-800 font-medium">
+              💡 Recuerda: Abre las herramientas de desarrollo del navegador (F12) 
+              para ver los mensajes de consola de los ejemplos de ciclo de vida.
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );

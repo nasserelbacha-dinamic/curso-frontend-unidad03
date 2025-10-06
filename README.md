@@ -1,19 +1,19 @@
-# 📚 Mi Biblioteca Personal
+# 🛍️ TechStore - Ecommerce
 
-Una aplicación React + TypeScript que demuestra todos los conceptos fundamentales de la **Clase 2: JSX y Componentes Tipados en React**.
+Una aplicación React + TypeScript que demuestra todos los conceptos fundamentales de la **Clase 3: Props y Estado Tipado en React**.
 
 ## 🎯 Objetivos del Proyecto
 
-Este proyecto implementa una biblioteca personal donde los usuarios pueden gestionar su colección de libros, demostrando:
+Este proyecto implementa un ecommerce completo donde los usuarios pueden explorar productos, agregar al carrito y realizar compras, demostrando:
 
-- ✅ **JSX básico** y diferencias con HTML
-- ✅ **Componentes funcionales** con TypeScript
-- ✅ **Props tipadas** con interfaces
-- ✅ **Retorno condicional** y expresiones dinámicas
-- ✅ **Fragmentos** para múltiples elementos
-- ✅ **Composición de componentes**
-- ✅ **Arrays y .map()** para listas dinámicas
-- ✅ **Estructura de carpetas** organizada
+- ✅ **Props tipadas** con interfaces TypeScript
+- ✅ **useState** con diferentes tipos de datos
+- ✅ **Manejo de eventos** tipados correctamente
+- ✅ **useEffect** para ciclo de vida y efectos secundarios
+- ✅ **Lifting State Up** para compartir estado entre componentes
+- ✅ **Formularios controlados** con validación
+- ✅ **Filtrado y búsqueda** en tiempo real
+- ✅ **Carrito de compras** funcional
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -27,87 +27,85 @@ Este proyecto implementa una biblioteca personal donde los usuarios pueden gesti
 
 ```
 src/
-├── components/           # Componentes reutilizables
-│   ├── Titulo.tsx       # Componente básico con props tipadas
-│   ├── TarjetaUsuario.tsx # Props múltiples
-│   ├── MensajeCondicional.tsx # Retorno condicional
-│   ├── Avatar.tsx       # Props con URLs de imagen
-│   ├── CardProducto.tsx # Interface Producto
-│   ├── TarjetaLibro.tsx # Interface Libro con lógica condicional
-│   ├── ListaLibros.tsx  # Arrays y .map()
-│   ├── DatosUsuario.tsx # Fragmentos
-│   ├── MensajeAdmin.tsx # Ternarios condicionales
-│   └── Perfil.tsx       # Composición de componentes
+├── components/           # Componentes del ecommerce
+│   ├── Header.tsx       # Header con carrito
+│   ├── ProductoCard.tsx # Tarjeta de producto con props tipadas
+│   ├── ListaProductos.tsx # Lista de productos con arrays
+│   ├── Carrito.tsx      # Carrito de compras con useState
+│   ├── Filtros.tsx      # Filtros con formularios controlados
+│   ├── Buscador.tsx     # Búsqueda con lifting state up
+│   ├── TemporizadorOfertas.tsx # useEffect con temporizador
+│   └── FormularioContacto.tsx # Formulario controlado
+├── data/
+│   └── productos.ts     # Datos de ejemplo
 ├── types/
 │   └── index.ts         # Interfaces TypeScript
-├── App.tsx              # Componente principal
-└── App.css              # Estilos de la aplicación
+└── App.tsx              # Aplicación principal con lifting state up
 ```
 
 ## 🧩 Componentes Implementados
 
-### 1. **Titulo** - Props básicas
+### 1. **Header** - Props tipadas y estado compartido
 ```tsx
-<Titulo texto="Mi Biblioteca Personal" />
-```
-
-### 2. **TarjetaUsuario** - Props múltiples
-```tsx
-<TarjetaUsuario 
-  nombre="María García" 
-  edad={25} 
-  email="maria@email.com" 
+<Header 
+  carrito={carrito} 
+  onMostrarCarrito={() => setMostrarCarrito(!mostrarCarrito)} 
 />
 ```
 
-### 3. **MensajeCondicional** - Retorno condicional
+### 2. **ProductoCard** - Props con interfaces complejas
 ```tsx
-<MensajeCondicional 
-  mostrar={true} 
-  mensaje="¡Bienvenido!" 
+<ProductoCard 
+  producto={producto}
+  onAgregarAlCarrito={agregarAlCarrito}
 />
 ```
 
-### 4. **Avatar** - Props con URLs
+### 3. **ListaProductos** - Arrays y .map() con props
 ```tsx
-<Avatar 
-  urlImagen="https://..." 
-  nombre="María"
-  tamaño="grande"
+<ListaProductos 
+  productos={productosFiltrados} 
+  onAgregarAlCarrito={agregarAlCarrito} 
 />
 ```
 
-### 5. **CardProducto** - Interface Producto
+### 4. **Carrito** - useState con objetos complejos
 ```tsx
-<CardProducto producto={producto} />
-```
-
-### 6. **TarjetaLibro** - Interface Libro con lógica
-```tsx
-<TarjetaLibro libro={libro} />
-```
-
-### 7. **ListaLibros** - Arrays y .map()
-```tsx
-<ListaLibros libros={libros} />
-```
-
-### 8. **DatosUsuario** - Fragmentos
-```tsx
-<DatosUsuario usuario={usuario} />
-```
-
-### 9. **MensajeAdmin** - Ternarios
-```tsx
-<MensajeAdmin 
-  esAdmin={true}
-  nombre="María"
+<Carrito 
+  carrito={carrito}
+  onActualizarCantidad={actualizarCantidad}
+  onRemoverProducto={removerDelCarrito}
+  onLimpiarCarrito={limpiarCarrito}
 />
 ```
 
-### 10. **Perfil** - Composición
+### 5. **Filtros** - Formularios controlados con useState
 ```tsx
-<Perfil usuario={usuario} />
+<Filtros 
+  categoria={filtros.categoria}
+  precioMin={filtros.precioMin}
+  precioMax={filtros.precioMax}
+  soloDestacados={filtros.soloDestacados}
+  onCambiarFiltros={setFiltros}
+/>
+```
+
+### 6. **Buscador** - Lifting State Up
+```tsx
+<Buscador 
+  termino={terminoBusqueda} 
+  onCambiarTermino={setTerminoBusqueda} 
+/>
+```
+
+### 7. **TemporizadorOfertas** - useEffect con temporizador
+```tsx
+<TemporizadorOfertas />
+```
+
+### 8. **FormularioContacto** - Formularios controlados
+```tsx
+<FormularioContacto />
 ```
 
 ## 🎨 Características Visuales
@@ -118,9 +116,40 @@ src/
 - **Sistema de colores** personalizado con paleta primaria
 - **Tipografía Inter** para mejor legibilidad
 - **Componentes reutilizables** con clases utilitarias
-- **Tema oscuro/claro** preparado para futuras implementaciones
 
-## 🚀 Cómo Ejecutar el Proyecto
+## 💡 Conceptos de la Clase 3 Aplicados
+
+### Props Tipadas
+- Interfaces bien definidas para todos los componentes
+- Props opcionales con el operador `?`
+- Validación de tipos en tiempo de compilación
+- Autocompletado y detección de errores
+
+### useState
+- Estado primitivo (string, number, boolean)
+- Estado complejo (objetos, arrays)
+- Actualización inmutable con spread operator
+- Tipado explícito para mejor seguridad
+
+### Manejo de Eventos
+- Eventos tipados correctamente
+- Formularios controlados
+- Prevención de defaults
+- Eventos de teclado y mouse
+
+### useEffect
+- Montaje de componentes
+- Actualización por dependencias
+- Limpieza de efectos secundarios
+- Temporizadores y listeners
+
+### Lifting State Up
+- Estado compartido entre componentes
+- Props hacia abajo, eventos hacia arriba
+- Comunicación entre componentes hermanos
+- Centralización de la lógica de estado
+
+## 🚀 Cómo usar este proyecto
 
 1. **Instalar dependencias:**
    ```bash
@@ -132,53 +161,41 @@ src/
    npm run dev
    ```
 
-3. **Abrir en el navegador:**
-   ```
-   http://localhost:5173
-   ```
+3. **Abrir el navegador** en la URL que muestra Vite (generalmente `http://localhost:5173`)
 
-## 📚 Conceptos Demostrados
+4. **Abrir las DevTools** (F12) para ver los mensajes de consola de los ejemplos de ciclo de vida
 
-### JSX vs HTML
-- `className` en lugar de `class`
-- `htmlFor` en lugar de `for`
-- Cierre obligatorio de etiquetas
-- Comentarios con `{/* */}`
+## 🎓 Funcionalidades del Ecommerce
 
-### TypeScript
-- Interfaces para tipar props
-- Importaciones de tipos con `import type`
-- Validación automática de tipos
-- Autocompletado en el editor
+### Catálogo de Productos
+- ✅ Visualización de productos con imágenes
+- ✅ Información detallada (precio, stock, categoría)
+- ✅ Productos destacados y con descuentos
+- ✅ Filtrado por categoría y precio
+- ✅ Búsqueda en tiempo real
 
-### Tailwind CSS
-- Clases utilitarias para diseño rápido
-- Sistema de colores personalizado
-- Responsive design con breakpoints
-- Componentes reutilizables con `@layer`
-- Animaciones y transiciones suaves
+### Carrito de Compras
+- ✅ Agregar productos al carrito
+- ✅ Modificar cantidades
+- ✅ Remover productos
+- ✅ Cálculo automático de totales
+- ✅ Limpiar carrito completo
 
-### Componentes React
-- Componentes funcionales
-- Props tipadas
-- Retorno condicional
-- Fragmentos para múltiples elementos
-- Composición de componentes
+### Interfaz de Usuario
+- ✅ Header con contador de carrito
+- ✅ Sidebar con filtros y búsqueda
+- ✅ Temporizador de ofertas especiales
+- ✅ Formulario de contacto
+- ✅ Diseño responsive
 
-### Buenas Prácticas
-- Un componente por archivo
-- Nombres en PascalCase
-- Separación de lógica y presentación
-- Estructura de carpetas organizada
-
-## 🎯 Próximos Pasos
+## 📚 Próximos Pasos
 
 Este proyecto está preparado para evolucionar en las siguientes clases:
 
-- **Clase 3:** Estado y Hooks (useState, useEffect)
-- **Clase 4:** Eventos y formularios
+- **Clase 4:** Hooks personalizados y Context API
 - **Clase 5:** Routing y navegación
-- **Clase 6:** Context API y estado global
+- **Clase 6:** Integración con APIs
+- **Clase 7:** Testing y optimización
 
 ## 👥 Contribución
 

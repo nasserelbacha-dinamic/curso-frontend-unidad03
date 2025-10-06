@@ -1,8 +1,8 @@
-# Clase 3 - Props y Estado Tipado en React
+# Clase 3 - Props y Estado Tipado en React - Ecommerce
 
 ## 📋 Contenido de la Clase
 
-Esta clase cubre los conceptos fundamentales de React con TypeScript:
+Esta clase cubre los conceptos fundamentales de React con TypeScript aplicados a un ecommerce real:
 
 ### 1. Props en React con TypeScript
 - ✅ **Conceptos básicos**: Qué son las props y por qué tiparlas
@@ -32,57 +32,43 @@ Esta clase cubre los conceptos fundamentales de React con TypeScript:
 - ✅ **Flujo de datos**: Props hacia abajo, eventos hacia arriba
 - ✅ **Comunicación entre hermanos**: A través del componente padre
 
-## 🎯 Ejercicios Implementados
+## 🛍️ Ecommerce Implementado
 
-### Ejercicios Básicos (1-5)
-1. **UsuarioCard**: Props tipadas con profesión opcional
-2. **Contador**: Estado numérico con tres botones
-3. **FormularioContacto**: Formulario controlado con dos campos
-4. **InputTipado**: Captura de texto con evento tipado
-5. **DetectorTeclas**: Detección de teclas con `onKeyDown`
+### Componentes del Ecommerce
+1. **Header**: Props tipadas y estado compartido
+2. **ProductoCard**: Props con interfaces complejas
+3. **ListaProductos**: Arrays y .map() con props
+4. **Carrito**: useState con objetos complejos
+5. **Filtros**: Formularios controlados con useState
+6. **Buscador**: Lifting State Up
+7. **TemporizadorOfertas**: useEffect con temporizador
+8. **FormularioContacto**: Formularios controlados
 
-### Ejercicios de Ciclo de Vida (6-8)
-6. **BienvenidaEjercicio**: Mensaje en consola al montar
-7. **NombreConEfecto**: Efecto que reacciona a cambios
-8. **TemporizadorEjercicio**: Limpieza de intervalos al desmontar
-
-### Ejercicios Avanzados (9-10)
-9. **LiftingStateEjercicio**: Estado compartido entre componentes
-10. **FormularioLogin**: Submit con prevención de default
+### Funcionalidades Implementadas
+- ✅ **Catálogo de productos** con filtrado y búsqueda
+- ✅ **Carrito de compras** funcional
+- ✅ **Temporizador de ofertas** con useEffect
+- ✅ **Formulario de contacto** controlado
+- ✅ **Interfaz responsive** con Tailwind CSS
 
 ## 📁 Estructura de Archivos
 
 ```
 src/
-├── components/
-│   ├── ejercicios/          # Ejercicios prácticos
-│   │   ├── UsuarioCard.tsx
-│   │   ├── ContadorEjercicio.tsx
-│   │   ├── FormularioContacto.tsx
-│   │   ├── InputTipado.tsx
-│   │   ├── DetectorTeclasEjercicio.tsx
-│   │   ├── BienvenidaEjercicio.tsx
-│   │   ├── NombreConEfecto.tsx
-│   │   ├── TemporizadorEjercicio.tsx
-│   │   ├── LiftingStateEjercicio.tsx
-│   │   └── FormularioLogin.tsx
-│   ├── Saludo.tsx           # Ejemplo básico de props
-│   ├── Usuario.tsx          # Props con opcionales
-│   ├── Contador.tsx         # useState básico
-│   ├── FormularioUsuario.tsx # Formulario con objeto
-│   ├── InputTexto.tsx       # Eventos básicos
-│   ├── DetectorTeclas.tsx   # Eventos de teclado
-│   ├── Bienvenida.tsx       # useEffect montaje/actualización
-│   ├── Reloj.tsx           # useEffect con intervalo
-│   ├── Temporizador.tsx    # useEffect con limpieza
-│   ├── SelectorColor.tsx   # Lifting state (hijo)
-│   ├── CajaColor.tsx       # Lifting state (hijo)
-│   ├── CampoNombre.tsx     # Lifting state (hijo)
-│   ├── SaludoNombre.tsx    # Lifting state (hijo)
-│   └── EjemploLiftingState.tsx # Lifting state (padre)
+├── components/           # Componentes del ecommerce
+│   ├── Header.tsx       # Header con carrito
+│   ├── ProductoCard.tsx # Tarjeta de producto con props tipadas
+│   ├── ListaProductos.tsx # Lista de productos con arrays
+│   ├── Carrito.tsx      # Carrito de compras con useState
+│   ├── Filtros.tsx      # Filtros con formularios controlados
+│   ├── Buscador.tsx     # Búsqueda con lifting state up
+│   ├── TemporizadorOfertas.tsx # useEffect con temporizador
+│   └── FormularioContacto.tsx # Formulario controlado
+├── data/
+│   └── productos.ts     # Datos de ejemplo
 ├── types/
-│   └── index.ts            # Interfaces de TypeScript
-└── App.tsx                 # Aplicación principal
+│   └── index.ts         # Interfaces TypeScript
+└── App.tsx              # Aplicación principal con lifting state up
 ```
 
 ## 🚀 Cómo usar este proyecto
@@ -101,32 +87,32 @@ src/
 
 4. **Abrir las DevTools** (F12) para ver los mensajes de consola de los ejemplos de ciclo de vida
 
-## 💡 Conceptos Clave Aprendidos
+## 💡 Conceptos Clave Aplicados
 
 ### Props Tipadas
 ```typescript
-interface Props {
-  nombre: string;
-  edad: number;
-  ciudad?: string; // Opcional
+interface ProductoCardProps {
+  producto: Producto;
+  onAgregarAlCarrito: (producto: Producto) => void;
 }
 
-const Usuario = ({ nombre, edad, ciudad }: Props) => {
+const ProductoCard = ({ producto, onAgregarAlCarrito }: ProductoCardProps) => {
   return <div>{/* JSX */}</div>;
 };
 ```
 
 ### Estado Tipado
 ```typescript
-const [usuario, setUsuario] = useState<Usuario>({
-  nombre: '',
-  email: ''
+const [carrito, setCarrito] = useState<Carrito>({
+  items: [],
+  total: 0,
+  cantidadTotal: 0
 });
 
 // Actualización inmutable
-setUsuario(prev => ({
+setCarrito(prev => ({
   ...prev,
-  nombre: 'Nuevo nombre'
+  total: nuevoTotal
 }));
 ```
 
@@ -136,8 +122,8 @@ const manejarCambio = (e: React.ChangeEvent<HTMLInputElement>) => {
   setTexto(e.target.value);
 };
 
-const manejarTecla = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  console.log(e.key);
+const manejarClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  console.log('Botón clickeado');
 };
 ```
 
@@ -164,13 +150,13 @@ useEffect(() => {
 ### Lifting State Up
 ```typescript
 // Componente padre
-const Padre = () => {
-  const [estado, setEstado] = useState('');
+const App = () => {
+  const [carrito, setCarrito] = useState<Carrito>({...});
   
   return (
     <>
-      <HijoEditor cambiarEstado={setEstado} />
-      <HijoVisualizador estado={estado} />
+      <Header carrito={carrito} onMostrarCarrito={setMostrarCarrito} />
+      <ListaProductos onAgregarAlCarrito={agregarAlCarrito} />
     </>
   );
 };
@@ -185,6 +171,7 @@ const Padre = () => {
 - ✅ Implementar el patrón "lifting state up"
 - ✅ Crear formularios controlados y funcionales
 - ✅ Aplicar buenas prácticas de TypeScript en React
+- ✅ Construir una aplicación real y funcional
 
 ## 📚 Próximos Pasos
 

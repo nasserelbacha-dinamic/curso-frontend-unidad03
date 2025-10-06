@@ -1,84 +1,93 @@
-// Interfaces para la aplicación de biblioteca personal
+// Interfaces para el Ecommerce - Clase 3: Props y Estado Tipado
 
-export interface Libro {
+// Interfaces principales del ecommerce
+export interface Producto {
   id: number;
-  titulo: string;
-  autor: string;
-  genero: string;
-  paginas: number;
-  leido: boolean;
-  calificacion?: number; // Opcional, solo si está leído
-  portada: string; // URL de la imagen
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock: number;
+  categoria: string;
+  imagen: string;
+  descuento?: number; // Porcentaje de descuento opcional
+  destacado: boolean;
 }
 
 export interface Usuario {
   id: number;
   nombre: string;
   email: string;
+  telefono?: string;
+  direccion?: string;
   esAdmin: boolean;
   avatar: string;
 }
 
-export interface Producto {
-  nombre: string;
-  precio: number;
-  stock: number;
+export interface ItemCarrito {
+  producto: Producto;
+  cantidad: number;
 }
 
-// Nuevas interfaces para la Clase 3 - Props y Estado Tipado
-
-// Interfaces para ejemplos de Props
-export interface SaludoProps {
-  nombre: string;
+export interface Carrito {
+  items: ItemCarrito[];
+  total: number;
+  cantidadTotal: number;
 }
 
-export interface UsuarioProps {
-  nombre: string;
-  edad: number;
-  ciudad?: string;
+// Interfaces para props de componentes
+export interface ProductoCardProps {
+  producto: Producto;
+  onAgregarAlCarrito: (producto: Producto) => void;
 }
 
-export interface UsuarioCardProps {
-  nombre: string;
-  edad: number;
-  profesion?: string;
+export interface CarritoProps {
+  carrito: Carrito;
+  onActualizarCantidad: (productoId: number, cantidad: number) => void;
+  onRemoverProducto: (productoId: number) => void;
+  onLimpiarCarrito: () => void;
 }
 
-// Interfaces para estado
-export interface UsuarioEstado {
-  nombre: string;
-  email: string;
+export interface FiltrosProps {
+  categoria: string;
+  precioMin: number;
+  precioMax: number;
+  soloDestacados: boolean;
+  onCambiarFiltros: (filtros: FiltrosProductos) => void;
 }
 
-export interface UsuarioCompleto {
-  nombre: string;
-  edad: number;
+export interface FiltrosProductos {
+  categoria: string;
+  precioMin: number;
+  precioMax: number;
+  soloDestacados: boolean;
 }
 
 // Interfaces para formularios
 export interface FormularioContacto {
   nombre: string;
+  email: string;
   mensaje: string;
 }
 
-export interface FormularioLogin {
-  usuario: string;
-  contraseña: string;
+export interface FormularioRegistro {
+  nombre: string;
+  email: string;
+  telefono: string;
+  direccion: string;
 }
 
 // Interfaces para lifting state up
-export interface SelectorColorProps {
-  cambiarColor: (nuevoColor: string) => void;
+export interface BuscadorProps {
+  termino: string;
+  onCambiarTermino: (termino: string) => void;
 }
 
-export interface CajaColorProps {
-  color: string;
+export interface ListaProductosProps {
+  productos: Producto[];
+  onAgregarAlCarrito: (producto: Producto) => void;
 }
 
-export interface CampoNombreProps {
-  cambiarNombre: (valor: string) => void;
-}
-
-export interface SaludoNombreProps {
-  nombre: string;
+export interface HeaderProps {
+  carrito: Carrito;
+  onMostrarCarrito: () => void;
 }

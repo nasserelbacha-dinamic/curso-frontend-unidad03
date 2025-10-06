@@ -1,19 +1,19 @@
 # 🛍️ TechStore - Ecommerce
 
-Una aplicación React + TypeScript que demuestra todos los conceptos fundamentales de la **Clase 3: Props y Estado Tipado en React**.
+Una aplicación React + TypeScript que demuestra todos los conceptos avanzados de la **Clase 4: Hooks en React con TypeScript** - useState y useEffect en profundidad.
 
 ## 🎯 Objetivos del Proyecto
 
-Este proyecto implementa un ecommerce completo donde los usuarios pueden explorar productos, agregar al carrito y realizar compras, demostrando:
+Este proyecto implementa un ecommerce completo donde los usuarios pueden explorar productos, agregar al carrito y realizar compras, demostrando **Clase 4: Hooks Avanzados**:
 
-- ✅ **Props tipadas** con interfaces TypeScript
-- ✅ **useState** con diferentes tipos de datos
-- ✅ **Manejo de eventos** tipados correctamente
-- ✅ **useEffect** para ciclo de vida y efectos secundarios
-- ✅ **Lifting State Up** para compartir estado entre componentes
-- ✅ **Formularios controlados** con validación
-- ✅ **Filtrado y búsqueda** en tiempo real
-- ✅ **Carrito de compras** funcional
+- ✅ **Custom Hooks** (`useLocalStorage`, `useDebounce`, `useOnlineStatus`, `useWindowSize`)
+- ✅ **useState avanzado** con objetos complejos, arrays y funciones de actualización
+- ✅ **useEffect avanzado** con limpieza, múltiples efectos y event listeners
+- ✅ **Persistencia de datos** con localStorage
+- ✅ **Optimización de búsquedas** con debounce
+- ✅ **Detección de conexión** en tiempo real
+- ✅ **Tipado explícito** con TypeScript
+- ✅ **Buenas prácticas** en el manejo de hooks
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -27,20 +27,25 @@ Este proyecto implementa un ecommerce completo donde los usuarios pueden explora
 
 ```
 src/
-├── components/           # Componentes del ecommerce
-│   ├── Header.tsx       # Header con carrito
-│   ├── ProductoCard.tsx # Tarjeta de producto con props tipadas
-│   ├── ListaProductos.tsx # Lista de productos con arrays
-│   ├── Carrito.tsx      # Carrito de compras con useState
-│   ├── Filtros.tsx      # Filtros con formularios controlados
-│   ├── Buscador.tsx     # Búsqueda con lifting state up
-│   ├── TemporizadorOfertas.tsx # useEffect con temporizador
-│   └── FormularioContacto.tsx # Formulario controlado
+├── components/                    # Componentes del ecommerce
+│   ├── Header.tsx                 # Header con detector de conexión (useOnlineStatus)
+│   ├── ProductoCard.tsx           # Tarjeta de producto con props tipadas
+│   ├── ListaProductos.tsx         # Lista de productos con arrays
+│   ├── Carrito.tsx                # Carrito de compras con persistencia
+│   ├── Filtros.tsx                # Filtros con formularios controlados
+│   ├── Buscador.tsx               # Búsqueda optimizada con debounce
+│   ├── TemporizadorOfertas.tsx    # useEffect avanzado con múltiples efectos
+│   └── FormularioContacto.tsx     # Formulario controlado
+├── hooks/                         # Custom Hooks (Clase 4)
+│   ├── useLocalStorage.ts         # Persistencia en localStorage
+│   ├── useDebounce.ts             # Optimización de búsquedas
+│   ├── useOnlineStatus.ts         # Detector de conexión
+│   └── useWindowSize.ts           # Detector de tamaño de ventana
 ├── data/
-│   └── productos.ts     # Datos de ejemplo
+│   └── productos.ts               # Datos de ejemplo
 ├── types/
-│   └── index.ts         # Interfaces TypeScript
-└── App.tsx              # Aplicación principal con lifting state up
+│   └── index.ts                   # Interfaces TypeScript
+└── App.tsx                        # App principal con useLocalStorage
 ```
 
 ## 🧩 Componentes Implementados
@@ -117,37 +122,113 @@ src/
 - **Tipografía Inter** para mejor legibilidad
 - **Componentes reutilizables** con clases utilitarias
 
-## 💡 Conceptos de la Clase 3 Aplicados
+## 💡 Conceptos de Clase 4 Aplicados
 
-### Props Tipadas
-- Interfaces bien definidas para todos los componentes
-- Props opcionales con el operador `?`
-- Validación de tipos en tiempo de compilación
-- Autocompletado y detección de errores
+### 🎣 Custom Hooks
 
-### useState
-- Estado primitivo (string, number, boolean)
-- Estado complejo (objetos, arrays)
-- Actualización inmutable con spread operator
-- Tipado explícito para mejor seguridad
+#### `useLocalStorage`
+- **Propósito:** Persistir estado en localStorage automáticamente
+- **Ubicación:** Carrito de compras
+- **Demuestra:** 
+  - Inicialización con función
+  - useEffect para sincronizar con localStorage
+  - Manejo de errores con try/catch
+  - Tipado genérico `<T>`
 
-### Manejo de Eventos
-- Eventos tipados correctamente
-- Formularios controlados
-- Prevención de defaults
-- Eventos de teclado y mouse
+```tsx
+const [carrito, setCarrito] = useLocalStorage<CarritoType>('techstore-carrito', {
+  items: [],
+  total: 0,
+  cantidadTotal: 0
+});
+```
 
-### useEffect
-- Montaje de componentes
-- Actualización por dependencias
-- Limpieza de efectos secundarios
-- Temporizadores y listeners
+#### `useDebounce`
+- **Propósito:** Optimizar búsquedas retrasando la ejecución
+- **Ubicación:** Buscador
+- **Demuestra:**
+  - useEffect con timeout
+  - Limpieza de timeouts (cleanup)
+  - Dependencias correctas
 
-### Lifting State Up
-- Estado compartido entre componentes
-- Props hacia abajo, eventos hacia arriba
-- Comunicación entre componentes hermanos
-- Centralización de la lógica de estado
+```tsx
+const terminoDebounced = useDebounce(terminoLocal, 500);
+```
+
+#### `useOnlineStatus`
+- **Propósito:** Detectar conexión a internet en tiempo real
+- **Ubicación:** Header
+- **Demuestra:**
+  - Event listeners (`online`, `offline`)
+  - Limpieza de múltiples listeners
+  - Tipado de eventos del navegador
+
+```tsx
+const isOnline = useOnlineStatus();
+```
+
+#### `useWindowSize`
+- **Propósito:** Detectar cambios de tamaño de ventana
+- **Demuestra:**
+  - Event listener `resize`
+  - Tipado de `UIEvent`
+  - Estado con interfaz personalizada
+
+### 🔧 useState Avanzado
+
+- **Arrays de objetos complejos** en el carrito
+- **Funciones de actualización** basadas en valor anterior (`prev => ...`)
+- **Inicialización con función** en useLocalStorage
+- **Inmutabilidad** con spread operator
+- **Tipado explícito** con interfaces complejas
+
+```tsx
+setCarrito((prev) => ({
+  ...prev,
+  items: [...prev.items, nuevoItem]
+}));
+```
+
+### ⚡ useEffect Avanzado
+
+#### Múltiples efectos separados
+```tsx
+// Efecto 1: Temporizador
+useEffect(() => {
+  const intervalo = setInterval(() => {...}, 1000);
+  return () => clearInterval(intervalo);
+}, [activo]);
+
+// Efecto 2: Ciclo de vida
+useEffect(() => {
+  console.log('Montado');
+  return () => console.log('Desmontado');
+}, []);
+
+// Efecto 3: Alertas
+useEffect(() => {
+  if (tiempo === 600) console.log('⚠️ Últimos 10 min!');
+}, [tiempo]);
+```
+
+#### Limpieza de efectos (cleanup)
+- **Intervalos:** `clearInterval`
+- **Timeouts:** `clearTimeout`
+- **Event listeners:** `removeEventListener`
+
+#### Dependencias correctas
+- **`[]`:** Solo montaje/desmontaje
+- **`[dep]`:** Cuando cambia la dependencia
+- **Sin array:** Cada render (evitar)
+
+### 🎨 Buenas Prácticas Aplicadas
+
+1. **Tipado explícito** en todos los hooks
+2. **Separación de responsabilidades** (un efecto, una responsabilidad)
+3. **Reutilización de lógica** con custom hooks
+4. **Limpieza obligatoria** de recursos externos
+5. **Comentarios explicativos** en código complejo
+6. **Logs de consola** para debugging
 
 ## 🚀 Cómo usar este proyecto
 
@@ -188,14 +269,43 @@ src/
 - ✅ Formulario de contacto
 - ✅ Diseño responsive
 
-## 📚 Próximos Pasos
+## 📚 Qué Aprendiste en Clase 4
 
-Este proyecto está preparado para evolucionar en las siguientes clases:
+### ✅ Custom Hooks
+- Crear hooks personalizados reutilizables
+- Convenciones de nombrado (`use...`)
+- Composición de hooks dentro de hooks
+- Abstraer lógica compleja
 
-- **Clase 4:** Hooks personalizados y Context API
-- **Clase 5:** Routing y navegación
-- **Clase 6:** Integración con APIs
-- **Clase 7:** Testing y optimización
+### ✅ useState Avanzado
+- Inicialización con función
+- Funciones de actualización basadas en estado anterior
+- Inmutabilidad con spread operator
+- Tipado genérico y explícito
+
+### ✅ useEffect Avanzado
+- Separar efectos por responsabilidad
+- Limpieza correcta de recursos
+- Manejo de dependencias
+- Event listeners del DOM
+
+### ✅ Persistencia
+- Sincronización con localStorage
+- Manejo de errores en operaciones externas
+- Serialización y deserialización de datos
+
+### ✅ Optimización
+- Debouncing de búsquedas
+- Prevención de renders innecesarios
+- Logs de debugging efectivos
+
+## 📝 Ejercicios Adicionales Sugeridos
+
+1. Crear un `useKeyPress` para detectar teclas específicas
+2. Implementar un `useHover` para detectar mouse sobre elementos
+3. Agregar un `usePrevious` para comparar valores anteriores
+4. Crear un `useToggle` para estados booleanos
+5. Implementar `useFetch` para llamadas a API
 
 ## 👥 Contribución
 

@@ -1,15 +1,25 @@
 import { useState, useEffect } from 'react';
 
-// Componente que demuestra useEffect - Clase 3
+/**
+ * Componente: TemporizadorOfertas
+ * Clase 4 - Demuestra:
+ * - useEffect con setInterval y limpieza correcta (cleanup)
+ * - Múltiples efectos separados por responsabilidad
+ * - Funciones de actualización basadas en estado anterior
+ * - Dependencias correctas en useEffect
+ */
 const TemporizadorOfertas = () => {
   const [tiempo, setTiempo] = useState<number>(3600); // 1 hora en segundos
   const [activo, setActivo] = useState<boolean>(true);
 
-  // useEffect para el temporizador - se ejecuta cuando cambia 'activo' o 'tiempo'
+  // Efecto 1: Manejar el temporizador con setInterval (Clase 4: limpieza de intervalos)
   useEffect(() => {
     if (!activo || tiempo <= 0) return;
 
+    console.log('[TemporizadorOfertas] Iniciando contador...');
+
     const intervalo = setInterval(() => {
+      // Función de actualización basada en valor anterior (buena práctica Clase 4)
       setTiempo(prevTiempo => {
         if (prevTiempo <= 1) {
           setActivo(false);
@@ -19,20 +29,32 @@ const TemporizadorOfertas = () => {
       });
     }, 1000);
 
-    // Función de limpieza
+    // Limpieza: cancelar intervalo cuando el componente se desmonte o cambien las dependencias
     return () => {
+      console.log('[TemporizadorOfertas] Limpiando intervalo');
       clearInterval(intervalo);
     };
-  }, [activo, tiempo]);
+  }, [activo, tiempo]); // Dependencias: se reinicia cuando cambia activo o tiempo
 
-  // useEffect para mostrar mensaje cuando se monta el componente
+  // Efecto 2: Ciclo de vida - montaje y desmontaje (Clase 4: múltiples efectos separados)
   useEffect(() => {
     console.log('🔥 TemporizadorOfertas: Componente montado');
     
     return () => {
-      console.log('🧹 TemporizadorOfertas: Componente desmontado');
+      console.log('🧹 TemporizadorOfertas: Componente desmontado (limpieza)');
     };
-  }, []); // Array vacío = solo al montar
+  }, []); // Array vacío = solo al montar/desmontar
+
+  // Efecto 3: Alertas en hitos específicos (Clase 4: efecto con dependencia específica)
+  useEffect(() => {
+    if (tiempo === 1800) {
+      console.log('⚠️ [TemporizadorOfertas] Quedan 30 minutos!');
+    } else if (tiempo === 600) {
+      console.log('⚠️ [TemporizadorOfertas] Últimos 10 minutos!');
+    } else if (tiempo === 0) {
+      console.log('⏰ [TemporizadorOfertas] ¡Oferta expirada!');
+    }
+  }, [tiempo]); // Dependencia: se ejecuta cada vez que cambia tiempo
 
   const formatearTiempo = (segundos: number): string => {
     const horas = Math.floor(segundos / 3600);

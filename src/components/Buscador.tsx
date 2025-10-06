@@ -1,9 +1,25 @@
+import { useState, useEffect } from 'react';
 import type { BuscadorProps } from '../types';
+import useDebounce from '../hooks/useDebounce';
 
-// Componente que demuestra lifting state up - Clase 3
+/**
+ * Componente: Buscador
+ * Clase 4 - Demuestra:
+ * - Custom hook useDebounce para optimizar búsquedas
+ * - useState local + lifting state up
+ * - useEffect para sincronizar con padre solo cuando termine de escribir
+ */
 const Buscador = ({ termino, onCambiarTermino }: BuscadorProps) => {
+  const [terminoLocal, setTerminoLocal] = useState<string>(termino);
+  const terminoDebounced = useDebounce(terminoLocal, 500); // Custom hook con delay
+
+  // Sincronizar con el padre solo cuando el término debounced cambie
+  useEffect(() => {
+    onCambiarTermino(terminoDebounced);
+  }, [terminoDebounced, onCambiarTermino]);
+
   const manejarCambio = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onCambiarTermino(e.target.value);
+    setTerminoLocal(e.target.value);
   };
 
   return (
@@ -19,16 +35,28 @@ const Buscador = ({ termino, onCambiarTermino }: BuscadorProps) => {
       <div className="relative">
         <input
           type="text"
-          value={termino}
+          value={terminoLocal}
           onChange={manejarCambio}
           placeholder="¿Qué estás buscando?"
           className="w-full px-6 py-4 pl-14 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition-all duration-300 bg-white shadow-lg hover:shadow-xl font-medium text-gray-700 placeholder-gray-400"
         />
       </div>
-      {termino && (
+      
+      {/* Indicador de debounce */}
+      {terminoLocal !== terminoDebounced && (
+        <div className="mt-3 p-2 bg-yellow-50 rounded-lg border border-yellow-200 flex items-center space-x-2">
+          <div className="animate-spin h-4 w-4 border-2 border-yellow-600 border-t-transparent rounded-full"></div>
+          <p className="text-xs text-yellow-700">Esperando...</p>
+        </div>
+      )}
+      
+      {terminoDebounced && (
         <div className="mt-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border-2 border-purple-200">
           <p className="text-sm text-purple-700 font-bold">
-            Buscando: <span className="text-purple-900">"{termino}"</span>
+            Buscando: <span className="text-purple-900">"{terminoDebounced}"</span>
+          </p>
+          <p className="text-xs text-purple-600 mt-1">
+            (búsqueda optimizada con debounce de 500ms)
           </p>
         </div>
       )}

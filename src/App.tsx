@@ -1,5 +1,19 @@
-// App principal - Clase 3: Props y Estado Tipado en React - Ecommerce
+/**
+ * App Principal - Clase 4: Hooks Avanzados en React con TypeScript
+ * 
+ * Demuestra:
+ * - Custom hooks (useLocalStorage, useDebounce, useOnlineStatus)
+ * - useState avanzado con objetos complejos y arrays
+ * - useEffect con múltiples efectos y limpieza correcta
+ * - Persistencia de estado con localStorage
+ * - Lifting State Up entre componentes
+ * - Props tipadas con TypeScript
+ */
+
 import { useState, useEffect } from 'react';
+
+// Custom hooks (Clase 4)
+import useLocalStorage from './hooks/useLocalStorage';
 
 // Componentes del ecommerce
 import Header from './components/Header';
@@ -19,7 +33,9 @@ function App() {
   // Estados principales del ecommerce - Lifting State Up
   const [productos] = useState<Producto[]>(productosEjemplo);
   const [productosFiltrados, setProductosFiltrados] = useState<Producto[]>(productosEjemplo);
-  const [carrito, setCarrito] = useState<CarritoType>({
+  
+  // Carrito con persistencia en localStorage (Clase 4: useLocalStorage)
+  const [carrito, setCarrito] = useLocalStorage<CarritoType>('techstore-carrito', {
     items: [],
     total: 0,
     cantidadTotal: 0
@@ -161,7 +177,7 @@ function App() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Banner de ofertas */}
         <div className="mb-8">
           <TemporizadorOfertas />
@@ -169,14 +185,14 @@ function App() {
 
         {/* Contenido principal */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
+
           {/* Sidebar con filtros y búsqueda */}
           <div className="lg:col-span-1 space-y-6">
-            <Buscador 
-              termino={terminoBusqueda} 
-              onCambiarTermino={setTerminoBusqueda} 
+            <Buscador
+              termino={terminoBusqueda}
+              onCambiarTermino={setTerminoBusqueda}
             />
-            <Filtros 
+            <Filtros
               categoria={filtros.categoria}
               precioMin={filtros.precioMin}
               precioMax={filtros.precioMax}
@@ -188,16 +204,16 @@ function App() {
           {/* Contenido principal */}
           <div className="lg:col-span-3">
             {mostrarCarrito ? (
-              <CarritoComponent 
+              <CarritoComponent
                 carrito={carrito}
                 onActualizarCantidad={actualizarCantidad}
                 onRemoverProducto={removerDelCarrito}
                 onLimpiarCarrito={limpiarCarrito}
               />
             ) : (
-              <ListaProductos 
-                productos={productosFiltrados} 
-                onAgregarAlCarrito={agregarAlCarrito} 
+              <ListaProductos
+                productos={productosFiltrados}
+                onAgregarAlCarrito={agregarAlCarrito}
               />
             )}
           </div>

@@ -1,8 +1,8 @@
-# Clase 3 - Props y Estado Tipado en React - Ecommerce
+# Clase 3 - Props y Estado Tipado en React - Ecommerce Simplificado
 
 ## 📋 Contenido de la Clase
 
-Esta clase cubre los conceptos fundamentales de React con TypeScript aplicados a un ecommerce real:
+Esta clase cubre los conceptos fundamentales de React con TypeScript aplicados a un ecommerce simplificado:
 
 ### 1. Props en React con TypeScript
 - ✅ **Conceptos básicos**: Qué son las props y por qué tiparlas
@@ -32,42 +32,41 @@ Esta clase cubre los conceptos fundamentales de React con TypeScript aplicados a
 - ✅ **Flujo de datos**: Props hacia abajo, eventos hacia arriba
 - ✅ **Comunicación entre hermanos**: A través del componente padre
 
-## 🛍️ Ecommerce Implementado
+## 🛍️ Ecommerce Simplificado Implementado
 
 ### Componentes del Ecommerce
-1. **Header**: Props tipadas y estado compartido
-2. **ProductoCard**: Props con interfaces complejas
+1. **Header**: Props tipadas con props opcionales
+2. **ProductoCard**: Props con interfaces complejas y useState interno
 3. **ListaProductos**: Arrays y .map() con props
-4. **Carrito**: useState con objetos complejos
-5. **Filtros**: Formularios controlados con useState
-6. **Buscador**: Lifting State Up
-7. **TemporizadorOfertas**: useEffect con temporizador
-8. **FormularioContacto**: Formularios controlados
+4. **Buscador**: Lifting State Up - componente hijo
+5. **MostrarResultados**: Lifting State Up - componente hijo
+6. **TemporizadorOfertas**: useEffect con temporizador y limpieza
+7. **FormularioContacto**: Formularios controlados con useState
 
 ### Funcionalidades Implementadas
-- ✅ **Catálogo de productos** con filtrado y búsqueda
-- ✅ **Carrito de compras** funcional
+- ✅ **Catálogo de productos** con búsqueda
+- ✅ **Sistema de búsqueda** con Lifting State Up
 - ✅ **Temporizador de ofertas** con useEffect
 - ✅ **Formulario de contacto** controlado
 - ✅ **Interfaz responsive** con Tailwind CSS
+- ✅ **Sistema de favoritos** en ProductoCard
 
 ## 📁 Estructura de Archivos
 
 ```
 src/
-├── components/           # Componentes del ecommerce
-│   ├── Header.tsx       # Header con carrito
-│   ├── ProductoCard.tsx # Tarjeta de producto con props tipadas
+├── components/           # Componentes del ecommerce simplificado
+│   ├── Header.tsx       # Header con props opcionales
+│   ├── ProductoCard.tsx # Tarjeta de producto con props tipadas y useState
 │   ├── ListaProductos.tsx # Lista de productos con arrays
-│   ├── Carrito.tsx      # Carrito de compras con useState
-│   ├── Filtros.tsx      # Filtros con formularios controlados
-│   ├── Buscador.tsx     # Búsqueda con lifting state up
+│   ├── Buscador.tsx     # Búsqueda con lifting state up (hijo)
+│   ├── MostrarResultados.tsx # Resultados con lifting state up (hijo)
 │   ├── TemporizadorOfertas.tsx # useEffect con temporizador
 │   └── FormularioContacto.tsx # Formulario controlado
 ├── data/
 │   └── productos.ts     # Datos de ejemplo
 ├── types/
-│   └── index.ts         # Interfaces TypeScript
+│   └── index.ts         # Interfaces TypeScript simplificadas
 └── App.tsx              # Aplicación principal con lifting state up
 ```
 
@@ -151,12 +150,12 @@ useEffect(() => {
 ```typescript
 // Componente padre
 const App = () => {
-  const [carrito, setCarrito] = useState<Carrito>({...});
+  const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
   
   return (
     <>
-      <Header carrito={carrito} onMostrarCarrito={setMostrarCarrito} />
-      <ListaProductos onAgregarAlCarrito={agregarAlCarrito} />
+      <Buscador termino={terminoBusqueda} onCambiarTermino={setTerminoBusqueda} />
+      <MostrarResultados termino={terminoBusqueda} cantidad={productos.length} />
     </>
   );
 };

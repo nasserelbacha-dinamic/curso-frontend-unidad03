@@ -1,4 +1,4 @@
-// Interfaces para el Ecommerce - Clase 3: Props y Estado Tipado
+// Interfaces para el Ecommerce Simplificado - Clase 3: Props y Estado Tipado
 
 // Interfaces principales del ecommerce
 export interface Producto {
@@ -23,43 +23,29 @@ export interface Usuario {
   avatar: string;
 }
 
-export interface ItemCarrito {
-  producto: Producto;
-  cantidad: number;
-}
-
-export interface Carrito {
-  items: ItemCarrito[];
-  total: number;
-  cantidadTotal: number;
-}
-
 // Interfaces para props de componentes
 export interface ProductoCardProps {
   producto: Producto;
-  onAgregarAlCarrito: (producto: Producto) => void;
 }
 
-export interface CarritoProps {
-  carrito: Carrito;
-  onActualizarCantidad: (productoId: number, cantidad: number) => void;
-  onRemoverProducto: (productoId: number) => void;
-  onLimpiarCarrito: () => void;
+export interface ListaProductosProps {
+  productos: Producto[];
 }
 
-export interface FiltrosProps {
-  categoria: string;
-  precioMin: number;
-  precioMax: number;
-  soloDestacados: boolean;
-  onCambiarFiltros: (filtros: FiltrosProductos) => void;
+export interface HeaderProps {
+  titulo: string;
+  subtitulo?: string;
 }
 
-export interface FiltrosProductos {
-  categoria: string;
-  precioMin: number;
-  precioMax: number;
-  soloDestacados: boolean;
+// Interfaces para lifting state up
+export interface BuscadorProps {
+  termino: string;
+  onCambiarTermino: (termino: string) => void;
+}
+
+export interface MostrarResultadosProps {
+  termino: string;
+  cantidad: number;
 }
 
 // Interfaces para formularios
@@ -74,20 +60,4 @@ export interface FormularioRegistro {
   email: string;
   telefono: string;
   direccion: string;
-}
-
-// Interfaces para lifting state up
-export interface BuscadorProps {
-  termino: string;
-  onCambiarTermino: (termino: string) => void;
-}
-
-export interface ListaProductosProps {
-  productos: Producto[];
-  onAgregarAlCarrito: (producto: Producto) => void;
-}
-
-export interface HeaderProps {
-  carrito: Carrito;
-  onMostrarCarrito: () => void;
 }

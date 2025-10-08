@@ -1,16 +1,16 @@
-// App principal - Clase 3: Props y Estado Tipado en React - Ecommerce
+// App principal - Clase 3: Props y Estado Tipado en React - Ecommerce Simplificado
 import { useState, useEffect } from 'react';
 
 // Componentes del ecommerce
 import Header from './components/Header';
 import Buscador from './components/Buscador';
-import Filtros from './components/Filtros';
+import MostrarResultados from './components/MostrarResultados';
 import ListaProductos from './components/ListaProductos';
-import CarritoComponent from './components/Carrito';
 import TemporizadorOfertas from './components/TemporizadorOfertas';
+import FormularioContacto from './components/FormularioContacto';
 
 // Tipos e interfaces
-import type { Producto, Carrito as CarritoType, ItemCarrito, FiltrosProductos } from './types';
+import type { Producto } from './types';
 
 // Datos de ejemplo
 import { productosEjemplo } from './data/productos';
@@ -19,25 +19,14 @@ function App() {
   // Estados principales del ecommerce - Lifting State Up
   const [productos] = useState<Producto[]>(productosEjemplo);
   const [productosFiltrados, setProductosFiltrados] = useState<Producto[]>(productosEjemplo);
-  const [carrito, setCarrito] = useState<CarritoType>({
-    items: [],
-    total: 0,
-    cantidadTotal: 0
-  });
 
-  // Estados para filtros y búsqueda
+  // Estados para búsqueda - Lifting State Up
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
-  const [filtros, setFiltros] = useState<FiltrosProductos>({
-    categoria: 'Todos',
-    precioMin: 0,
-    precioMax: 2000,
-    soloDestacados: false
-  });
 
   // Estados para UI
-  const [mostrarCarrito, setMostrarCarrito] = useState<boolean>(false);
+  const [mostrarFormulario, setMostrarFormulario] = useState<boolean>(false);
 
-  // useEffect para filtrar productos cuando cambian los filtros o búsqueda
+  // useEffect para filtrar productos cuando cambia la búsqueda
   useEffect(() => {
     let productosFiltrados = productos;
 
@@ -49,44 +38,8 @@ function App() {
       );
     }
 
-    // Filtrar por categoría
-    if (filtros.categoria !== 'Todos') {
-      productosFiltrados = productosFiltrados.filter(producto =>
-        producto.categoria === filtros.categoria
-      );
-    }
-
-    // Filtrar por rango de precios
-    productosFiltrados = productosFiltrados.filter(producto =>
-      producto.precio >= filtros.precioMin && producto.precio <= filtros.precioMax
-    );
-
-    // Filtrar solo destacados
-    if (filtros.soloDestacados) {
-      productosFiltrados = productosFiltrados.filter(producto =>
-        producto.destacado
-      );
-    }
-
     setProductosFiltrados(productosFiltrados);
-  }, [productos, terminoBusqueda, filtros]);
-
-  // useEffect para calcular total del carrito
-  useEffect(() => {
-    const total = carrito.items.reduce((sum: number, item: ItemCarrito) => {
-      return sum + (item.producto.precio * item.cantidad);
-    }, 0);
-
-    const cantidadTotal = carrito.items.reduce((sum: number, item: ItemCarrito) => {
-      return sum + item.cantidad;
-    }, 0);
-
-    setCarrito((prev: CarritoType) => ({
-      ...prev,
-      total,
-      cantidadTotal
-    }));
-  }, [carrito.items]);
+  }, [productos, terminoBusqueda]);
 
   // useEffect para mostrar mensaje de bienvenida
   useEffect(() => {
@@ -96,68 +49,14 @@ function App() {
     return () => {
       console.log('TechStore: Aplicación desmontada');
     };
-  }, []);
-
-  // Funciones para manejar el carrito
-  const agregarAlCarrito = (producto: Producto) => {
-    setCarrito((prev: CarritoType) => {
-      const itemExistente = prev.items.find((item: ItemCarrito) => item.producto.id === producto.id);
-      
-      if (itemExistente) {
-        return {
-          ...prev,
-          items: prev.items.map((item: ItemCarrito) =>
-            item.producto.id === producto.id
-              ? { ...item, cantidad: item.cantidad + 1 }
-              : item
-          )
-        };
-      } else {
-        return {
-          ...prev,
-          items: [...prev.items, { producto, cantidad: 1 }]
-        };
-      }
-    });
-  };
-
-  const actualizarCantidad = (productoId: number, cantidad: number) => {
-    if (cantidad <= 0) {
-      removerDelCarrito(productoId);
-      return;
-    }
-
-    setCarrito((prev: CarritoType) => ({
-      ...prev,
-      items: prev.items.map((item: ItemCarrito) =>
-        item.producto.id === productoId
-          ? { ...item, cantidad }
-          : item
-      )
-    }));
-  };
-
-  const removerDelCarrito = (productoId: number) => {
-    setCarrito((prev: CarritoType) => ({
-      ...prev,
-      items: prev.items.filter((item: ItemCarrito) => item.producto.id !== productoId)
-    }));
-  };
-
-  const limpiarCarrito = () => {
-    setCarrito({
-      items: [],
-      total: 0,
-      cantidadTotal: 0
-    });
-  };
+  }, [productos.length]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <Header 
-        carrito={carrito}
-        onMostrarCarrito={() => setMostrarCarrito(!mostrarCarrito)}
+        titulo="🛍️ TechStore - Clase 3"
+        subtitulo="Props y Estado Tipado en React"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -167,41 +66,99 @@ function App() {
           <TemporizadorOfertas />
         </div>
 
-        {/* Contenido principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Sección de búsqueda - Lifting State Up */}
+        <section className="mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              🔍 Búsqueda de Productos (Lifting State Up)
+            </h2>
+            <p className="text-gray-600">
+              El estado de búsqueda se comparte entre el buscador y los resultados
+            </p>
+          </div>
           
-          {/* Sidebar con filtros y búsqueda */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-6">
             <Buscador 
               termino={terminoBusqueda} 
               onCambiarTermino={setTerminoBusqueda} 
             />
-            <Filtros 
-              categoria={filtros.categoria}
-              precioMin={filtros.precioMin}
-              precioMax={filtros.precioMax}
-              soloDestacados={filtros.soloDestacados}
-              onCambiarFiltros={setFiltros}
+            <MostrarResultados 
+              termino={terminoBusqueda}
+              cantidad={productosFiltrados.length}
             />
           </div>
+        </section>
 
-          {/* Contenido principal */}
-          <div className="lg:col-span-3">
-            {mostrarCarrito ? (
-              <CarritoComponent 
-                carrito={carrito}
-                onActualizarCantidad={actualizarCantidad}
-                onRemoverProducto={removerDelCarrito}
-                onLimpiarCarrito={limpiarCarrito}
-              />
-            ) : (
-              <ListaProductos 
-                productos={productosFiltrados} 
-                onAgregarAlCarrito={agregarAlCarrito} 
-              />
-            )}
+        {/* Lista de productos */}
+        <section className="mb-8">
+          <ListaProductos productos={productosFiltrados} />
+        </section>
+
+        {/* Formulario de contacto */}
+        <section className="mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              📝 Formulario de Contacto
+            </h2>
+            <p className="text-gray-600">
+              Ejemplo de formulario controlado con useState
+            </p>
           </div>
-        </div>
+          
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-4">
+              <button
+                onClick={() => setMostrarFormulario(!mostrarFormulario)}
+                className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                  mostrarFormulario 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+              >
+                {mostrarFormulario ? 'Ocultar Formulario' : 'Mostrar Formulario'}
+              </button>
+            </div>
+            
+            {mostrarFormulario && <FormularioContacto />}
+          </div>
+        </section>
+
+        {/* Footer educativo */}
+        <footer className="bg-white rounded-lg shadow-md border p-8 text-center">
+          <h3 className="text-xl font-semibold mb-4">🎓 Conceptos Demostrados</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Props Tipadas</h4>
+              <ul className="space-y-1 text-left">
+                <li>• ProductoCard recibe props tipadas</li>
+                <li>• Header con props opcionales</li>
+                <li>• Interfaces bien definidas</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Estado y Eventos</h4>
+              <ul className="space-y-1 text-left">
+                <li>• useState con tipos explícitos</li>
+                <li>• Formularios controlados</li>
+                <li>• Eventos tipados correctamente</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Ciclo de Vida</h4>
+              <ul className="space-y-1 text-left">
+                <li>• useEffect para montaje/desmontaje</li>
+                <li>• Temporizador con limpieza</li>
+                <li>• Lifting State Up implementado</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+            <p className="text-blue-800 font-medium">
+              💡 Abre las herramientas de desarrollo (F12) para ver los mensajes de consola
+            </p>
+          </div>
+        </footer>
 
       </div>
     </div>

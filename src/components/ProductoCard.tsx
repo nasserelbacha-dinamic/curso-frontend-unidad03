@@ -1,13 +1,23 @@
+import { useState } from 'react';
 import type { ProductoCardProps } from '../types';
 
 // Componente que demuestra props tipadas - Clase 3
-const ProductoCard = ({ producto, onAgregarAlCarrito }: ProductoCardProps) => {
+const ProductoCard = ({ producto }: ProductoCardProps) => {
+  const [favorito, setFavorito] = useState<boolean>(false);
+  const [visto, setVisto] = useState<boolean>(false);
+
   const precioConDescuento = producto.descuento 
     ? producto.precio * (1 - producto.descuento / 100)
     : producto.precio;
 
-  const manejarClick = () => {
-    onAgregarAlCarrito(producto);
+  const manejarFavorito = () => {
+    setFavorito(!favorito);
+    console.log(`Producto ${favorito ? 'removido de' : 'agregado a'} favoritos:`, producto.nombre);
+  };
+
+  const manejarVer = () => {
+    setVisto(true);
+    console.log('Producto visto:', producto.nombre);
   };
 
   return (
@@ -62,22 +72,39 @@ const ProductoCard = ({ producto, onAgregarAlCarrito }: ProductoCardProps) => {
             Stock: {producto.stock}
           </span>
         
-        <div className="flex flex-col gap-2 justify-between mt-2">
-          <span className="text-xs bg-blue-50 text-blue-600 font-semibold px-3 py-1 rounded-full">
-            {producto.categoria}
-          </span>
+        <div className="flex flex-col gap-3 mt-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs bg-blue-50 text-blue-600 font-semibold px-3 py-1 rounded-full">
+              {producto.categoria}
+            </span>
+            
+            <button
+              onClick={manejarFavorito}
+              className={`p-2 rounded-full transition-all duration-300 ${
+                favorito 
+                  ? 'bg-red-100 text-red-500' 
+                  : 'bg-gray-100 text-gray-400 hover:bg-red-100 hover:text-red-500'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
           
-                <button
-                  onClick={manejarClick}
-                  disabled={producto.stock === 0}
-                  className={`px-8 py-3 rounded-2xl font-bold transition-all duration-300 ${
-                    producto.stock === 0
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-110'
-                  }`}
-                >
-                  {producto.stock === 0 ? 'Agotado' : '+ Agregar al Carrito'}
-                </button>
+          <button
+            onClick={manejarVer}
+            disabled={producto.stock === 0}
+            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+              producto.stock === 0
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : visto
+                ? 'bg-green-500 text-white'
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+            }`}
+          >
+            {producto.stock === 0 ? 'Agotado' : visto ? '✓ Visto' : 'Ver Producto'}
+          </button>
         </div>
       </div>
     </div>

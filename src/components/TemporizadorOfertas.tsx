@@ -1,85 +1,96 @@
 import { useState, useEffect } from 'react';
 
-// Componente que demuestra useEffect - Clase 3
 const TemporizadorOfertas = () => {
-  const [tiempo, setTiempo] = useState<number>(3600); // 1 hora en segundos
+  const [tiempoRestante, setTiempoRestante] = useState<number>(3600); // 1 hora en segundos
   const [activo, setActivo] = useState<boolean>(true);
 
-  // useEffect para el temporizador - se ejecuta cuando cambia 'activo' o 'tiempo'
   useEffect(() => {
-    if (!activo || tiempo <= 0) return;
+    console.log('⏰ TemporizadorOfertas montado');
+    
+    let intervalo: NodeJS.Timeout | null = null;
 
-    const intervalo = setInterval(() => {
-      setTiempo(prevTiempo => {
-        if (prevTiempo <= 1) {
-          setActivo(false);
-          return 0;
-        }
-        return prevTiempo - 1;
-      });
-    }, 1000);
+    if (activo && tiempoRestante > 0) {
+      intervalo = setInterval(() => {
+        setTiempoRestante((prev) => {
+          if (prev <= 1) {
+            setActivo(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
 
     // Función de limpieza
     return () => {
-      clearInterval(intervalo);
+      if (intervalo) {
+        clearInterval(intervalo);
+        console.log('⏰ Intervalo del temporizador limpiado');
+      }
     };
-  }, [activo, tiempo]);
+  }, [activo, tiempoRestante]);
 
-  // useEffect para mostrar mensaje cuando se monta el componente
+  // useEffect para desmontaje
   useEffect(() => {
-    console.log('🔥 TemporizadorOfertas: Componente montado');
-    
     return () => {
-      console.log('🧹 TemporizadorOfertas: Componente desmontado');
+      console.log('⏰ TemporizadorOfertas desmontado');
     };
-  }, []); // Array vacío = solo al montar
+  }, []);
 
   const formatearTiempo = (segundos: number): string => {
     const horas = Math.floor(segundos / 3600);
     const minutos = Math.floor((segundos % 3600) / 60);
     const segs = segundos % 60;
+    
     return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
   };
 
-  const reiniciarOferta = () => {
-    setTiempo(3600);
+  const reiniciarTemporizador = () => {
+    setTiempoRestante(3600);
     setActivo(true);
+    console.log('🔄 Temporizador reiniciado');
   };
 
   return (
-    <div className="bg-gradient-to-r from-orange-500 via-pink-500 to-red-600 text-white rounded-3xl shadow-2xl p-8 relative overflow-hidden transform hover:scale-105 transition-transform duration-300">
-      {/* Efecto de brillo animado */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-center space-x-3 mb-6">
-          <h3 className="text-2xl font-bold">Oferta Especial</h3>
+    <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white p-6 rounded-lg shadow-lg">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold mb-2">
+          🔥 ¡Ofertas por tiempo limitado!
+        </h2>
+        <p className="text-red-100 mb-4">
+          useEffect con temporizador y limpieza
+        </p>
+        
+        {tiempoRestante > 0 ? (
+          <div className="text-4xl font-mono font-bold mb-4">
+            {formatearTiempo(tiempoRestante)}
+          </div>
+        ) : (
+          <div className="text-2xl font-bold mb-4 text-yellow-200">
+            ⏰ ¡Ofertas terminadas!
+          </div>
+        )}
+        
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={() => setActivo(!activo)}
+            className="bg-white text-red-500 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+          >
+            {activo ? 'Pausar' : 'Reanudar'}
+          </button>
+          
+          <button
+            onClick={reiniciarTemporizador}
+            className="bg-yellow-400 text-red-800 px-4 py-2 rounded-lg font-medium hover:bg-yellow-300 transition-colors"
+          >
+            Reiniciar
+          </button>
         </div>
         
-        <div className="text-center">
-          <div className="text-5xl font-black mb-4 tracking-wider drop-shadow-lg">
-            {formatearTiempo(tiempo)}
-          </div>
-          
-          <p className="text-lg mb-6 font-medium">
-            {activo ? '¡Aprovecha esta oferta antes de que termine!' : '¡Oferta expirada!'}
-          </p>
-          
-          {!activo && (
-            <button
-              onClick={reiniciarOferta}
-              className="bg-white hover:bg-yellow-50 text-orange-700 px-10 py-4 rounded-3xl font-black transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-110 border-4 border-yellow-300"
-            >
-              🔄 Reiniciar Oferta
-            </button>
-          )}
-          
-          {activo && (
-            <div className="flex items-center justify-center space-x-2 text-sm opacity-90">
-              <span>Tiempo limitado</span>
-            </div>
-          )}
-        </div>
+        <p className="text-xs text-red-100 mt-3">
+          Estado: {activo ? 'Corriendo' : 'Pausado'} | 
+          Revisa la consola para ver los mensajes del ciclo de vida
+        </p>
       </div>
     </div>
   );

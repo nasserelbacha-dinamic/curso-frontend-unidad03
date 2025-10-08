@@ -57,12 +57,12 @@ const ProductoCard = ({ producto, onAgregarAlCarrito }: ProductoCardProps) => {
             )}
           </div>
           
+        </div>
           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
             Stock: {producto.stock}
           </span>
-        </div>
         
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col mt-2 gap-2 justify-between">
           <span className="text-xs bg-blue-50 text-blue-600 font-semibold px-3 py-1 rounded-full">
             {producto.categoria}
           </span>

@@ -69,11 +69,29 @@ export interface FormularioContacto {
   mensaje: string;
 }
 
+// Clase 5: Formulario de registro completo con validaciones
 export interface FormularioRegistro {
   nombre: string;
+  apellido: string;
   email: string;
+  password: string;
+  confirmarPassword: string;
+  telefono?: string;
+  fechaNacimiento?: string;
+  aceptaTerminos: boolean;
+  recibirPromociones: boolean;
+}
+
+// Clase 5: Formulario de checkout para finalizar compra
+export interface FormularioCheckout {
+  email: string;
+  nombreCompleto: string;
   telefono: string;
   direccion: string;
+  ciudad: string;
+  codigoPostal: string;
+  notas?: string;
+  metodoPago: 'tarjeta' | 'efectivo' | 'transferencia';
 }
 
 // Interfaces para lifting state up

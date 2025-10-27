@@ -1,126 +1,35 @@
-# 📚 Mi Biblioteca Personal
+# Clase 3 - Props y Estado Tipado en React
+**Versión simplificada para clase de 1 hora**
 
-Una aplicación React + TypeScript que demuestra todos los conceptos fundamentales de la **Clase 2: JSX y Componentes Tipados en React**.
+## 🎯 Objetivos de la Clase
 
-## 🎯 Objetivos del Proyecto
+Esta clase cubre los **5 conceptos fundamentales** de React con TypeScript:
 
-Este proyecto implementa una biblioteca personal donde los usuarios pueden gestionar su colección de libros, demostrando:
+1. **Props tipadas** - Pasar datos entre componentes
+2. **Estado (useState)** - Manejar datos que cambian
+3. **Eventos** - Responder a interacciones del usuario
+4. **Ciclo de vida (useEffect)** - Ejecutar código en momentos específicos
+5. **Lifting State Up** - Compartir estado entre componentes
 
-- ✅ **JSX básico** y diferencias con HTML
-- ✅ **Componentes funcionales** con TypeScript
-- ✅ **Props tipadas** con interfaces
-- ✅ **Retorno condicional** y expresiones dinámicas
-- ✅ **Fragmentos** para múltiples elementos
-- ✅ **Composición de componentes**
-- ✅ **Arrays y .map()** para listas dinámicas
-- ✅ **Estructura de carpetas** organizada
-
-## 🚀 Tecnologías Utilizadas
-
-- **React 18** - Biblioteca de UI
-- **TypeScript** - Tipado estático
-- **Vite** - Herramienta de construcción
-- **Tailwind CSS** - Framework de CSS utilitario
-- **PostCSS** - Procesador de CSS
+---
 
 ## 📁 Estructura del Proyecto
 
 ```
 src/
-├── components/           # Componentes reutilizables
-│   ├── Titulo.tsx       # Componente básico con props tipadas
-│   ├── TarjetaUsuario.tsx # Props múltiples
-│   ├── MensajeCondicional.tsx # Retorno condicional
-│   ├── Avatar.tsx       # Props con URLs de imagen
-│   ├── CardProducto.tsx # Interface Producto
-│   ├── TarjetaLibro.tsx # Interface Libro con lógica condicional
-│   ├── ListaLibros.tsx  # Arrays y .map()
-│   ├── DatosUsuario.tsx # Fragmentos
-│   ├── MensajeAdmin.tsx # Ternarios condicionales
-│   └── Perfil.tsx       # Composición de componentes
-├── types/
-│   └── index.ts         # Interfaces TypeScript
-├── App.tsx              # Componente principal
-└── App.css              # Estilos de la aplicación
+├── components/
+│   ├── Saludo.tsx              # 1. Props tipadas básicas
+│   ├── Usuario.tsx             # 2. Props con opcionales
+│   ├── Contador.tsx            # 3. Estado con useState
+│   ├── FormularioSimple.tsx    # 4. Eventos y formularios
+│   ├── Reloj.tsx               # 5. useEffect con limpieza
+│   └── EjemploLiftingState.tsx # 6. Lifting state up
+└── App.tsx                     # Aplicación principal
 ```
 
-## 🧩 Componentes Implementados
+---
 
-### 1. **Titulo** - Props básicas
-```tsx
-<Titulo texto="Mi Biblioteca Personal" />
-```
-
-### 2. **TarjetaUsuario** - Props múltiples
-```tsx
-<TarjetaUsuario 
-  nombre="María García" 
-  edad={25} 
-  email="maria@email.com" 
-/>
-```
-
-### 3. **MensajeCondicional** - Retorno condicional
-```tsx
-<MensajeCondicional 
-  mostrar={true} 
-  mensaje="¡Bienvenido!" 
-/>
-```
-
-### 4. **Avatar** - Props con URLs
-```tsx
-<Avatar 
-  urlImagen="https://..." 
-  nombre="María"
-  tamaño="grande"
-/>
-```
-
-### 5. **CardProducto** - Interface Producto
-```tsx
-<CardProducto producto={producto} />
-```
-
-### 6. **TarjetaLibro** - Interface Libro con lógica
-```tsx
-<TarjetaLibro libro={libro} />
-```
-
-### 7. **ListaLibros** - Arrays y .map()
-```tsx
-<ListaLibros libros={libros} />
-```
-
-### 8. **DatosUsuario** - Fragmentos
-```tsx
-<DatosUsuario usuario={usuario} />
-```
-
-### 9. **MensajeAdmin** - Ternarios
-```tsx
-<MensajeAdmin 
-  esAdmin={true}
-  nombre="María"
-/>
-```
-
-### 10. **Perfil** - Composición
-```tsx
-<Perfil usuario={usuario} />
-```
-
-## 🎨 Características Visuales
-
-- **Diseño responsivo** con Tailwind CSS Grid y Flexbox
-- **Gradientes modernos** y sombras personalizadas
-- **Animaciones suaves** en hover y transiciones
-- **Sistema de colores** personalizado con paleta primaria
-- **Tipografía Inter** para mejor legibilidad
-- **Componentes reutilizables** con clases utilitarias
-- **Tema oscuro/claro** preparado para futuras implementaciones
-
-## 🚀 Cómo Ejecutar el Proyecto
+## 🚀 Cómo usar este proyecto
 
 1. **Instalar dependencias:**
    ```bash
@@ -132,58 +41,97 @@ src/
    npm run dev
    ```
 
-3. **Abrir en el navegador:**
-   ```
-   http://localhost:5173
-   ```
+3. **Abrir el navegador** en `http://localhost:5173`
 
-## 📚 Conceptos Demostrados
-
-### JSX vs HTML
-- `className` en lugar de `class`
-- `htmlFor` en lugar de `for`
-- Cierre obligatorio de etiquetas
-- Comentarios con `{/* */}`
-
-### TypeScript
-- Interfaces para tipar props
-- Importaciones de tipos con `import type`
-- Validación automática de tipos
-- Autocompletado en el editor
-
-### Tailwind CSS
-- Clases utilitarias para diseño rápido
-- Sistema de colores personalizado
-- Responsive design con breakpoints
-- Componentes reutilizables con `@layer`
-- Animaciones y transiciones suaves
-
-### Componentes React
-- Componentes funcionales
-- Props tipadas
-- Retorno condicional
-- Fragmentos para múltiples elementos
-- Composición de componentes
-
-### Buenas Prácticas
-- Un componente por archivo
-- Nombres en PascalCase
-- Separación de lógica y presentación
-- Estructura de carpetas organizada
-
-## 🎯 Próximos Pasos
-
-Este proyecto está preparado para evolucionar en las siguientes clases:
-
-- **Clase 3:** Estado y Hooks (useState, useEffect)
-- **Clase 4:** Eventos y formularios
-- **Clase 5:** Routing y navegación
-- **Clase 6:** Context API y estado global
-
-## 👥 Contribución
-
-Este es un proyecto educativo. Si encuentras algún error o tienes sugerencias, ¡no dudes en contribuir!
+4. **Abrir las DevTools** (F12) para ver los logs de useEffect
 
 ---
 
-**Desarrollado como parte del curso de React + TypeScript** 🚀
+## 📚 Conceptos Demostrados
+
+### 1. Props Tipadas (`Saludo.tsx`)
+```typescript
+interface SaludoProps {
+  nombre: string;
+}
+
+const Saludo = ({ nombre }: SaludoProps) => {
+  return <p>Hola, {nombre}!</p>;
+};
+```
+
+### 2. Props Opcionales (`Usuario.tsx`)
+```typescript
+interface UsuarioProps {
+  nombre: string;
+  edad: number;
+  ciudad?: string; // Opcional con ?
+}
+```
+
+### 3. Estado con useState (`Contador.tsx`)
+```typescript
+const [cuenta, setCuenta] = useState<number>(0);
+```
+
+### 4. Eventos Tipados (`FormularioSimple.tsx`)
+```typescript
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setNombre(e.target.value);
+};
+```
+
+### 5. Ciclo de Vida con useEffect (`Reloj.tsx`)
+```typescript
+useEffect(() => {
+  const intervalo = setInterval(() => {
+    // código
+  }, 1000);
+
+  return () => clearInterval(intervalo); // Limpieza
+}, []); // Dependencias
+```
+
+### 6. Lifting State Up (`EjemploLiftingState.tsx`)
+- El **padre** mantiene el estado
+- Un **hijo** modifica el estado (recibe función)
+- Otro **hijo** muestra el estado (recibe valor)
+
+---
+
+## ⏱️ Plan de Clase (1 hora)
+
+| Tiempo | Tema | Componente |
+|--------|------|------------|
+| 0-10 min | Intro + Props | `Saludo.tsx`, `Usuario.tsx` |
+| 10-25 min | useState | `Contador.tsx` |
+| 25-40 min | Eventos | `FormularioSimple.tsx` |
+| 40-50 min | useEffect | `Reloj.tsx` |
+| 50-60 min | Lifting State | `EjemploLiftingState.tsx` |
+
+---
+
+## 💡 Notas para el Instructor
+
+- **Enfoque**: Conceptos sobre estilos (estilos inline simples)
+- **Live Coding**: Construir incrementalmente desde cero
+- **Consola**: Mostrar logs de useEffect
+- **Interactividad**: Hacer que los estudiantes prueben cada ejemplo
+
+---
+
+## 📖 Material Complementario
+
+- La versión completa con todos los ejercicios está en la branch `clase-03`
+- Documento teórico completo disponible en el repositorio
+
+---
+
+## 🎓 Qué lograrás al terminar
+
+✅ Crear componentes con props tipadas  
+✅ Manejar estado interno con useState  
+✅ Capturar eventos del usuario  
+✅ Controlar el ciclo de vida con useEffect  
+✅ Compartir estado entre componentes  
+✅ Construir aplicaciones React funcionales con TypeScript

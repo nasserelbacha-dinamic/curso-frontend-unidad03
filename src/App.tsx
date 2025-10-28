@@ -9,6 +9,8 @@ import Contador from './components/Contador';
 import FormularioSimple from './components/FormularioSimple';
 import Reloj from './components/Reloj';
 import EjemploLiftingState from './components/EjemploLiftingState';
+import DemostracionHooks from './components/DemostracionHooks';
+import FormularioCompleto from './components/FormularioCompleto';
 
 function App() {
   const [mostrarReloj, setMostrarReloj] = useState<boolean>(true);
@@ -22,7 +24,7 @@ function App() {
     }}>
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
         <h1>Clase 3: Props y Estado Tipado en React</h1>
-        <p>Conceptos fundamentales de React + TypeScript</p>
+        <p>Conceptos fundamentales de React + TypeScript + Hooks Avanzados</p>
       </header>
 
       {/* 1. Props tipadas */}
@@ -51,6 +53,12 @@ function App() {
 
       {/* 6. Lifting State Up */}
       <EjemploLiftingState />
+
+      {/* 7. Demostración completa de Hooks */}
+      <DemostracionHooks />
+
+      {/* 8. Formulario completo con validaciones */}
+      <FormularioCompleto />
 
       <footer style={{ 
         marginTop: '40px', 

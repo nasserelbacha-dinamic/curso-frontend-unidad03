@@ -1,45 +1,45 @@
-// Componente 4: Eventos + Estado
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+
 
 const FormularioSimple = () => {
-  const [nombre, setNombre] = useState<string>('');
-  const [mensaje, setMensaje] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    console.log("hola")
+  }, [])
+
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log('Formulario enviado:', { nombre, mensaje });
-    alert(`Datos: ${nombre} - ${mensaje}`);
-  };
+    
+    console.log(email)
+    console.log(password)
+
+    if (!email || !password ) {
+      console.log("el email es requerido")
+    }
+  }
 
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc', margin: '10px 0' }}>
-      <h2>4. Eventos y Formularios</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Nombre: </label>
-          <input 
-            type="text"
-            value={nombre}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNombre(e.target.value)}
-            style={{ marginLeft: '10px' }}
-          />
-        </div>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Mensaje: </label>
-          <input 
-            type="text"
-            value={mensaje}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMensaje(e.target.value)}
-            style={{ marginLeft: '10px' }}
-          />
-        </div>
-        <button type="submit">Enviar</button>
-      </form>
-      <p style={{ marginTop: '10px' }}>
-        <strong>Vista previa:</strong> {nombre} dice: "{mensaje}"
-      </p>
-    </div>
-  );
+    <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+      <input 
+        placeholder="email" 
+        className="bg-zinc-200 p-5" 
+        type="email" 
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+      />
+      <input 
+        placeholder="password" 
+        className="bg-zinc-200 p-5" 
+        type="password" 
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+      />
+
+      <input type="submit" />
+    </form>
+  )
 };
 
 export default FormularioSimple;
